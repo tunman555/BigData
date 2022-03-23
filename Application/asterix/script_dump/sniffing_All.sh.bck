@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#record all data
+
+path_rec_RADAR="/opt/system/rec_ALL_data_zip"
+
+	ssh root@baccasp01li "tcpdump -i enp10s0f1 host 224.8.48.2 -s0 -vvv -G 3600 -w ${path_rec_RADAR}/All_%Y%m%d_%H%M%S.pcap -z gzip > /dev/null 2>&1 &"
+
+
+
