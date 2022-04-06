@@ -1,41 +1,39 @@
-import socket
-import struct
-import threading
-import json
+import glob
+import schedule
 import time
-mcst_prt={} 
+import os
+import shutil 
 
-with open('./config/radar_port_mcast','r') as f :
-    for line in f :
-        mcst_prt[line.split()[0]] = int(line.split()[1]) ,line.split()[2] 
+def get_latest(path):
+        list_of_files = glob.glob(path + '/*.gz')
+        if len(list_of_files) != 0:
+                return max(list_of_files,key = os.path.getctime)
+        else :
+                return None
+cat = ['RADAR','ADSB','CAT62']
 
-with open('./config/mcst_prt.json','w') as f:
-    json.dump(mcst_prt,f)
+wd = "/home/system/asterix_collection/"
+target_dir = '/home/ftper/data/'
 
-def sub_mcast(MCAST_PORT,MCAST_ADDR):
-    #create sock object
-    sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM,socket.IPPROTO_UDP)
+def job():
+        for i in cat:
+                site_addr = glob.glob(wd + "data/" + i + "/*")
+                for j in site_addr:
+                        latest_file = get_latest(j)
 
-    # allow multiple socket to  use the same port number
-    sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+                        if latest_file != None :
+                                src_type = latest_file.split('/')[5]
+                                main = latest_file.split('/')[6][-1]
+                                if src_type == 'RADAR' and main=='1':
+                                        shutil.move(latest_file, target_dir + '/RADAR/' + j)
+                                elif src_type == 'ADSB':
+                                        shutil.move(latest_file, target_dir + '/ADSB/' + j)
+                                elif src_type == 'CAT62':
+                                        if latest_file.split('/')[6] =='ACC62':
+                                                shutil.move(latest_file, target_dir + '/CAT62/' + j)
 
-    #bind portdd
-    sock.bind((MCAST_ADDR,MCAST_PORT))
+                        else : pass
 
-    #tell kernel that this is m.cast socket
-    mreq = struct.pack('4sl',socket.inet_aton(MCAST_ADDR),socket.INADDR_ANY)
-
-    sock.setsockopt(socket.IPPROTO_IP,socket.IP_ADD_MEMBERSHIP,mreq)
-
-    #set timeout 0 => poll the socket 
-    #sock.setblocking(0)
-    
-    while True:
-        time.sleep(10000)
-       # pass
-
-
-#threading part
-for key in mcst_prt :
-    x = threading.Thread(target=sub_mcast,args=(mcst_prt[key]))
-    x.start()
+schedule.every().hour.at(":00").do(job)
+while True:
+        schedule.run_pending()
