@@ -28,3 +28,4 @@ pip install -r requirement.txt
 ```python
 Usage : python insert.py <file directory>
 ```
+edit user,password,database in insert.py file as it should be.
