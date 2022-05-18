@@ -2,6 +2,9 @@
   Jade's TMCS part is all about scheduling query data from BACCEOP03LI(Jade Node) and transfer to Transfer area.
   
 # Jade data pipeline installation Big data server part
+## Prerequisite
+  * Python 3
+  * 
     
 ## Installation and running pipeline
 ### 1. Preparation user in PostgreSQL DB
@@ -12,7 +15,8 @@
       
       GRANT SELECT,INSERT,UPDATE,DELETE 
       ON <table> 
-      TO jade;```
+      TO jade;
+      ```
 ### 2. Restore Source database  
       revia pgadmin
       
@@ -23,6 +27,6 @@
       pip install -r requirement.txt
       ```
 ### 4. Insert to Database
-    ```python
-    
+    ```console
+    Usage : python insert.py <file directory>
     ```
