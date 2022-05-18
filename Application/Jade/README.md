@@ -16,7 +16,7 @@
 ## Installation and running pipeline
 ### 1. Preparation user in PostgreSQL DB
       create jade user with insert,update permission
-      ```sql
+      ~~~~sql
       CREATE ROLE jade 
       LOGIN
       PASSWORD 'jade';
@@ -24,7 +24,7 @@
       GRANT SELECT,INSERT,UPDATE,DELETE 
       ON <table> 
       TO jade;
-      ```
+      ~~~~
 ### 2. Restore Source database  
       revia pgadmin
       
