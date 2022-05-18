@@ -20,8 +20,8 @@ TO jade;
 restore backup database via pgadmin
       
 ### 3. Python package install
-Assume that server already has python installed so... install only package via requirement.txt file
 ```python
+# install psycopg2
 pip install -r requirement.txt
 ```
 ### 4. Insert to Database
