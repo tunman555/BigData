@@ -28,5 +28,6 @@ pip install -r requirement.txt
 ```python
 Usage : python insert.py <file directory>
 ```
-schedule insert.py for batch insertion 
+schedule insert.py for batch insertion
+
 edit user,password,database in insert.py file as it should be.
