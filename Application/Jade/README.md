@@ -17,6 +17,8 @@ ON <table>
 TO jade;
 ```
 ### 2. Restore Source database  
+https://drive.google.com/file/d/1Dt7VB4ASGmR1D6wYQ12VBUb6zGcSWy4j/view?usp=sharing
+
 create Jade database and restore backup database via pgadmin
       
 ### 3. Python package install
